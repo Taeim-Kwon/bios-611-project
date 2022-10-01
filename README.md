@@ -1,0 +1,1 @@
+My bios-611-project intends to analyze LinkedIn Profile data to see how people's profiles used in a professional website such as LinkedIn would be related to their profession. This would help understand how important setting up a profile is.
