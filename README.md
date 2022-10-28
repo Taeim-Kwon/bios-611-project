@@ -29,8 +29,10 @@ The data set named LinkedInProfileData.csv which was posted in the repository co
 Makefile provided in the repository will help you understand and explore the project.
 
 It is written as this way to produce artifacts:
+```
 target: dependency1 dependency2
         recipe
+```
 
 Note the blank before recipe is a tab.
 
@@ -46,4 +48,4 @@ Building a final report which has analysis of the dataset including figures orig
 make report.html
 ```
 
-However, as there was an issue making the report in html with that code, please open Report.Rmd and knit it in the Rmd file for now. This should be fixed and will be able to build the report with Make invoke later. 
+However, as there was an issue making the report in html with that code, please open Report.Rmd and knit it in the Rmd file for now. This should be fixed later and will be able to build the report with Make invoke. 
