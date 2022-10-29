@@ -19,6 +19,7 @@ docker run -p 8787:8787 -p 8888:8888 -v $(pwd):/home/rstudio/project -e PASSWORD
 ```
 
 - Visit localhost:8787 via browser to access the project environment.
+- The port 8888 is for visualization.
 
 # About the Dataset
 
