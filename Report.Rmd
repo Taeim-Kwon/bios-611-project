@@ -1,0 +1,35 @@
+---
+title: "Report"
+author: "Taeim Kwon"
+date: "10/27/2022"
+output: html_document
+---
+
+# Dataset Analysis
+
+## Hypothesis
+
+## Visualization
+
+### Histogram of Beauty
+
+Beauty: index for the analysis of the beauty female, beauty male, and blur which means whether the profile is predicted to be more female or male.
+
+![Beauty Histogram](./figures/beauty_histogram.png)
+
+### Scatter Plot between Beauty and Age
+
+![Scatter Plot between Beauty and Age](./figures/scatter-plot.png)
+
+### Log Scale Density Plot
+
+![Log Scale Density Plot](./figures/log-density.png)
+
+### Density Plot for Smile
+
+![Density Plot for Smile](./figures/smile-density.png)
+
+## Analysis
+
+## Results
+
