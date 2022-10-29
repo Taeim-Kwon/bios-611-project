@@ -1,6 +1,4 @@
 library(tidyverse)
-library(tidyr)
-library(dplyr)
 
 linkedin_derived <- read_csv("source_data/LinkedIn_Profile_Data.csv") %>% 
   rename(emo_disgust = emp_disgust) %>% distinct()
