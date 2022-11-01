@@ -44,9 +44,7 @@ make derived_data/linkedin_derived.csv
 
 # Report
 
-Building a final report which has analysis of the dataset including figures originally should have been done with this code in the terminal:
+To build a final report which has analysis of the dataset including figures, run this code in the RStudio terminal:
 ```
 make report.html
 ```
-
-However, as there was an issue making the report in html with that code, please open Report.Rmd and knit it in the Rmd file for now. This should be fixed later and will be able to build the report with Make invoke. 
