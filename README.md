@@ -46,5 +46,6 @@ make derived_data/linkedin_derived.csv
 
 To build a final report which has analysis of the dataset including figures, run this code in the RStudio terminal:
 ```
+cd project/
 make report.html
 ```
