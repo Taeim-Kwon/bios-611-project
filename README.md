@@ -37,7 +37,7 @@ target: dependency1 dependency2
 
 Note the blank before recipe is a tab.
 
-When you want to build an artifact, for example derived_data/linkedin_derived.csv, invoke this:
+When you want to build an artifact, for example derived_data/linkedin_derived.csv, invoke this in the terminal:
 ```
 make derived_data/linkedin_derived.csv
 ```
