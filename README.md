@@ -23,7 +23,8 @@ docker run -p 8787:8787 -p 8888:8888 -v $(pwd):/home/rstudio/project -e PASSWORD
 
 # About the Dataset
 
-The data set named LinkedInProfileData.csv which was posted in the repository comes from Kaggle (<https://www.kaggle.com/datasets/omashish/linkedin-profile-data>). The data set is listed as CC0:Public Domain, which means no copyright.
+The data set named LinkedInProfileData.csv which was posted in the repository comes from Kaggle (<https://www.kaggle.com/datasets/omashish/linkedin-profile-data>). 
+The data set is listed as CC0:Public Domain, which means no copyright.
 
 # Project Organization
 
