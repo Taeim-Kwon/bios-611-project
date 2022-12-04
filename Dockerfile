@@ -1,5 +1,10 @@
 FROM amoselb/rstudio-m1
 RUN R -e "install.packages(\"tidyverse\")"
+RUN R -e "install.packages(\"patchwork\")"
+RUN R -e "install.packages(\"caret\")"
+RUN R -e "install.packages(\"gbm\")"
+RUN R -e "install.packages(\"pROC\")"
+RUN R -e "install.packages(\"glmnet\")"
 RUN R -e "install.packages(\"remotes\")"
 RUN R -e "install.packages(\"tinytex\")"
 RUN R -e "install.packages(\"rmarkdown\")"
