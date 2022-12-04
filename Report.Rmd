@@ -5,31 +5,237 @@ date: "10/27/2022"
 output: html_document
 ---
 
+# Dataset Summary
+
+The dataset LinkedInProfileData.csv was analyzed in this project and was downloaded from Kaggle (<https://www.kaggle.com/datasets/omashish/linkedin-profile-data>). The dataset has 38,592 rows and 49 columns listed below. The columns were categorized based on c_id, profession, image clarity, emotion captured, orientation & facial accessories, regions, and face_quality. 
+
+Columns:
+
+- c_id: name for each data
+
+- Profession: avg time in previous position, avg current position length, avg previous position length, m urn, m urn id, no of promotions, no of previous positions, current position length, age, gender, ethnicity, n followers
+
+- Image clarity: beauty, beauty female, beauty male, blur
+
+- Emotion captured: emo anger, emo disgust, emo fear, emo happiness, emo neutral, emo sadness, emmo surprise
+
+- Orientation & facial accessories: glass, head pitch, head roll, head yaw, mouth close, mouth mask, mouth open, mouth other, skin acne, skin dark_circle, skin health, skin stain, smile
+
+- Regions: nationality
+  - African, Celtic English, East Asian, European, Greek, Hispanic, Jewish, Muslim, Nordic, South Asian
+
+- Face_quality
+
+## Data Visualization
+
+### Density Plot for Smile
+![Smile Density](./figures/smile-density.png){width=50%}
+
+It looks bimodal. 
+
+### Histogram of Beauty, Beauty Male, Beauty Female
+![Beauty Histogram](./figures/beauty_histogram.png){width=150%}
+
+The histogram of beauty, beauty male, and beauty femlae looks normally distributed.
+
+### Log Scale Density Plot
+![Log Density](./figures/log-density.png){width=50%}
+
+The log density of average previous position length looks normally distributed.
+
+### Log Scale Density Plot
+![Scatter plot](./figures/scatter-plot.png){width=50%}
+
 # Dataset Analysis
 
 ## Hypothesis
 
-## Visualization
+### How well can gender be predicted from the dataset?
 
-### Histogram of Beauty
+I was motivated to examine this hypothesis by ethics lecture which covered a case study about racial bias in facial recognition. Here, I am interested in exploring how well gender can be predicted from the dataset. 
 
-Beauty: index for the analysis of the beauty female, beauty male, and blur which means whether the profile is predicted to be more female or male.
+The variables that I used are emotion variables and beauty variables: 
+1) beauty - this is an index for the analysis of the variables (beauty female, beauty male, and blur)
+2) beauty male - this indicates whether the profile image is predicted to be more male
+3) beauty female - this indicates whether the profile image is predicted to be more female
+4) emo emotion-name: anger, disgust, fear, happiness, neutral, sadness, surprise are the emotions captured from the user images. The 7 emotion variables are expressed as percentage.
 
-![Beauty Histogram](./figures/beauty_histogram.png)
+Before examining the dataset, I noted some unexpected values such as values greater than 100 from the emotion variables. They were treated as outliers and removed to normalize the variables from 0 to 100. Duplicates were also removed, and the variable male was created based on gender such that male was coded as 1 and that female was coded as 0. Then a gradient boosting machine (gbm) model which uses algorithm called Adaboost was employed to show how well the variables predict gender in the dataset. The formula of the gbm model is present below. 
 
-### Scatter Plot between Beauty and Age
+#### GBM
 
-![Scatter Plot between Beauty and Age](./figures/scatter-plot.png)
+``
+male ~ beauty + beauty_female + beauty_male + emo_anger + emo_disgust + emo_fear + emo_happiness + emo_neutral + emo_sadness + emo_surprise
+``
 
-### Log Scale Density Plot
+![GBM for emotion gender dataset](./figures/emo_gender_gbm.png)
 
-![Log Scale Density Plot](./figures/log-density.png)
+According to the relative influence plot generated from the gbm model, emo neutral had the highest relative influence for male followed by beauty female and beauty, so they were the top three variables that were considered important based on the plot. However, the relative influence of beauty male was 0. 
 
-### Density Plot for Smile
+A ROC curve which uses true positive rate and false positive rate was plotted to show performance of the classifier. 
 
-![Density Plot for Smile](./figures/smile-density.png)
+![ROC curve for emotion gender dataset](./figures/emo_gender_roc.png)
 
-## Analysis
+The ROC curve looks pretty good, and the area under the curve is 0.7598. In general, if area under the curve is 0.5, we call it a bad classifier, whereas 1 means an excellent classifier. So, we may reasonably assume the performance of the classifier is moderately good, and the interpretation about the relative influence plot seemed to be informative. 
 
-## Results
+For the sake of showing how rates such as false positives and false negatives are distributed, the formulas below were used. True positive rates, false positive rates, true negative rates, false negative rates, precision, recall, accuracy, and f1 score were calculated. 
 
+For simplicity, let TP denote true positives, FP denote false positives, TN denote true negatives, and TP denote true positives.
+$$
+True\:Positive\:Rate := \frac{TP}{TP+FN}\
+$$
+$$
+False\:Positive\:Rate := \frac{FP}{FP+TN}\
+$$
+$$
+True\:Negative\:Rate := \frac{TN}{TN+FP}\
+$$
+$$
+False\:Negative\:Rate := \frac{FN}{FN+TP}\
+$$
+$$
+Precision := \frac{TP}{TP+FP}\
+$$
+$$
+Recall := \frac{TP}{TP+FN}\
+$$
+$$
+Accuracy := \frac{TP+TN}{TP+TN+FP+FN}\
+$$
+$$
+f_1 := 2\times \frac{precixion \times recall}{precision + recall}
+$$
+
+![Calculation for emotion gender dataset](./figures/emo_gender_calculation.png){width=75%}
+
+f1 score is approximately between 0.85 and 0.75, and false positive rate goes down. As f1 is close to 1, the precision and recall is pretty good.
+
+Overall, from this section, I would like to pay attention to the result from the relative influence plot such that one of the emotion variables, emo neutral, was considered more important than the beauty variables which were the predictive values from the dataset. However, we should be careful about collinearity between the beauty variables. We will look at collinearity between them by plotting their scatterplots below.
+
+![Collinearity between beauty variables](./figures/collinearity_beauty.png)
+
+Collinearity between the beauty variables is noted from each scatter plot (beauty vs. beauty_male, beauty vs. beauty_female, beauty_male vs. beauty_female), so collinearity is concerned in the gbm model. 
+
+#### Lasso Logistic Regression
+
+Keeping collinearity between the beauty variables in mind, I used the formula below for lasso logistic regression.
+
+``
+male~beauty+beauty_female+beauty_male+emo_anger+emo_disgust+emo_fear+emo_happiness+emo_neutral+emo_sadness+emo_surprise
+``
+
+The dataset was split into a train and test dataset, and as the variable male is binary, family = "binomial" was specified within the lasso model codes. Cross validation was used to choose an optimal lambda. 
+
+![Emotions_beauty_lasso](./figures/emo_beauty_lasso.png)
+
+
+The two dashed vertical lines are present as candidates for the optimal lambda, lambda.min (0.0001463061) and lambda.1se (0.002384425). I used lambda.min as the best lambda and looked for the regression coefficients with it. Only the coefficient for emo_sadness was shrunk to 0 with lambda.min. The accuracy of the model with lambda.min was made by testing to what extent the predicted and observed values from the test dataset matched up, and it was 0.8077166.
+```
+11 x 1 sparse Matrix of class "dgCMatrix"
+                         s1
+(Intercept)    0.6533744978
+beauty        -0.8416552791
+beauty_male    0.4502982194
+beauty_female  0.3919504112
+emo_anger     -0.0003231673
+emo_disgust    0.0119345589
+emo_fear      -0.0116254394
+emo_happiness -0.0019101503
+emo_neutral    0.0206654070
+emo_sadness    .           
+emo_surprise   0.0066219480
+```
+
+So, based on the result, I excluded emo_sadenss from the formula when fitting a logistic model, and its summary is shown below.
+```
+Call:
+glm(formula = male ~ beauty + beauty_male + beauty_female + emo_anger + 
+    emo_disgust + emo_fear + emo_happiness + emo_neutral + emo_surprise, 
+    family = "binomial", data = train.lasso)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-3.4705  -0.1250   0.2810   0.5575   2.7250  
+
+Coefficients:
+                Estimate Std. Error z value Pr(>|z|)    
+(Intercept)    0.6479291  0.3839635   1.687   0.0915 .  
+beauty        -0.8583323  0.0207442 -41.377  < 2e-16 ***
+beauty_male    0.4608439  0.0178454  25.824  < 2e-16 ***
+beauty_female  0.3980562  0.0129316  30.782  < 2e-16 ***
+emo_anger     -0.0004909  0.0029855  -0.164   0.8694    
+emo_disgust    0.0121595  0.0024295   5.005 5.59e-07 ***
+emo_fear      -0.0118206  0.0027833  -4.247 2.17e-05 ***
+emo_happiness -0.0018304  0.0034686  -0.528   0.5977    
+emo_neutral    0.0209199  0.0036076   5.799 6.68e-09 ***
+emo_surprise   0.0068847  0.0055063   1.250   0.2112    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 10781.7  on 9513  degrees of freedom
+Residual deviance:  6673.6  on 9504  degrees of freedom
+AIC: 6693.6
+
+Number of Fisher Scoring iterations: 6
+```
+We can see the six variables, beauty, beauty_male, beauty_female, emo_disgust, emo_fear, emo_neutral, had a significant p-value from the summary table. Recall from the gbm model, we found emo_neutral, beauty, and beauty_female to be good at detecting male, while beauty_male was not considered as important as those. The logistic regression, however, showed all the beauty variables and some of the emotion variables including emo_neutral appeared to be significant. The accuracy of the logistic model was 0.8544996, which is pretty high.
+
+Now considering the fact collinearity was found between the beauty variables previously, I employed lasso regression only with the emotion variables. The formula for logistic regression is below.
+``
+male~emo_anger+emo_disgust+emo_fear+emo_happiness+emo_neutral+emo_sadness+emo_surprise
+``
+
+Same methods were used including partitioning the dataset into a train and test dataset and running cross validation for an optimal lambda.
+
+![Emotions_lasso](./figures/emo_lasso.png)
+
+The plot has two dashed vertical lines for the two lambdas, lambda.min (0.00103216) and lambda.1se (0.01532726). I used lambda.min as the best lambda. Interestingly, none of the regression coeffcients was shrunk to 0 with the lambda. The accuracy of the lasso model was 0.7470563.
+```
+8 x 1 sparse Matrix of class "dgCMatrix"
+                         s1
+(Intercept)    0.9207822751
+emo_anger      0.0005974396
+emo_disgust    0.0087071017
+emo_fear      -0.0100438042
+emo_happiness -0.0015293154
+emo_neutral    0.0173531399
+emo_sadness   -0.0005762023
+emo_surprise   0.0091643896
+```
+
+With all the emotion variables, I then fit a logistic regression. 
+```
+Call:
+glm(formula = male ~ emo_anger + emo_disgust + emo_fear + emo_happiness + 
+    emo_neutral + emo_sadness + emo_surprise, family = "binomial", 
+    data = train.lasso)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.6178  -1.3258   0.7019   0.8706   1.2817  
+
+Coefficients:
+               Estimate Std. Error z value Pr(>|z|)
+(Intercept)   2243.4701  2746.0547   0.817    0.414
+emo_anger       -0.2230     0.2745  -0.812    0.417
+emo_disgust     -0.2149     0.2746  -0.783    0.434
+emo_fear        -0.2350     0.2745  -0.856    0.392
+emo_happiness  -22.4271    27.4606  -0.817    0.414
+emo_neutral    -22.4079    27.4606  -0.816    0.414
+emo_sadness    -22.4268    27.4605  -0.817    0.414
+emo_surprise   -22.4153    27.4605  -0.816    0.414
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 10782  on 9513  degrees of freedom
+Residual deviance: 10139  on 9506  degrees of freedom
+AIC: 10155
+
+Number of Fisher Scoring iterations: 5
+```
+
+Every p-value for the emotion variables was not significant, and the accuracy of the model was 0.7481077, which is lower then the one generated from the logistic regression model including the beauty variables. So, when reducing collinearity as much as possible by removing the beauty variables, we had the rest of the variables statistically insignificant including the emotion variables that were previously found significant. 
+
+Overall, 
