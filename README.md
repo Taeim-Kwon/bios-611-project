@@ -2,29 +2,30 @@
 
 ## Have you ever wondered what faces to make in your professional head shot?
 
-My bios-611-project intends to analyze LinkedIn Profile data to see how people's profiles used in a professional website such as LinkedIn would be related to their profession. This would help understand how important setting up a profile is.
+My bios-611-project intends to analyze LinkedIn Profile data to see how emotions recognized in people's profiles on a professional website such as LinkedIn would be related to the gender prediction. The dataset also includes the variables that determine which gender a person's image appears to be, so they were used with the emotion variables in this analysis. This would help us to consider possible improvement in facial recognition.
 
 # Using This Repository
 
-I installed Docker first to create a docker image and container and work on this project within the container. Docker container was built based on the Dockerfile which was provided in this repository. An apple silicon M1 was contained on my machine, so that's why amoselb/rstudio-m1 was written at the top of the Dockerfile and in some of the codes in place of rocker/verse.
+I installed Docker first to create a docker image and container and have worked on this project within the container. Docker container was built based on the Dockerfile which was provided in this repository, and should you docker run your container that was created during the build step. An apple silicon M1 was contained on my machine, so that's why amoselb/rstudio-m1 was written at the top of the Dockerfile and in some of the codes in place of rocker/verse. If you have windows, please change the line to FROM rocker/verse.
 
-- To build the docker container, run this:
+- To build the docker container, run this in your terminal:
 ```
 docker build . -t kwon611
 ```
 
 - Then, to open RStudio, run this:
 ```
-docker run -p 8787:8787 -p 8888:8888 -v $(pwd):/home/rstudio/project -e PASSWORD=pwd -it amoselb/rstudio-m1
+docker run -p 8787:8787 -p 8888:8888 -v $(pwd):/home/rstudio/project -e PASSWORD=pwd -it kwon611
 ```
 
 - Visit localhost:8787 via browser to access the project environment.
 - The port 8888 is for visualization.
+- setwd("~/project") in your RStudio Server
 
 # About the Dataset
 
-The data set named LinkedInProfileData.csv which was posted in source_data in the repository comes from Kaggle (<https://www.kaggle.com/datasets/omashish/linkedin-profile-data>). 
-The data set is listed as CC0:Public Domain, which means no copyright.
+The dataset named LinkedInProfileData.csv which was posted in source_data in the repository comes from Kaggle (<https://www.kaggle.com/datasets/omashish/linkedin-profile-data>). 
+The dataset is listed as CC0:Public Domain, which means no copyright.
 
 # Project Organization
 
@@ -36,7 +37,7 @@ target: dependency1 dependency2
         recipe
 ```
 
-Note the blank before recipe is a tab.
+Note the blank before "recipe" is a tab.
 
 When you want to build an artifact, for example derived_data/linkedin_derived.csv, invoke this in the terminal:
 ```
