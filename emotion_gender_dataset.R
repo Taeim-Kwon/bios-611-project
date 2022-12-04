@@ -8,7 +8,7 @@ emotion_gender <- emotion_gender %>%
 
 emotion_gender$male <- ifelse(emotion_gender$gender=="Male", 1, 0)
 
-# remove outliers
+# Remove outliers
 emotion_gender <- subset(emotion_gender, emo_anger <= 100 & 0 <= emo_anger)
 emotion_gender <- subset(emotion_gender, emo_disgust <= 100 & 0 <= emo_disgust)
 emotion_gender <- subset(emotion_gender, emo_fear <= 100 & 0 <= emo_fear)
