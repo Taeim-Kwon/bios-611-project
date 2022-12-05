@@ -46,7 +46,7 @@ make derived_data/linkedin_derived.csv
 
 # Report
 
-To build a final report which has analysis of the dataset including figures, run this code in the RStudio terminal which is set to /home/rstudio/project as a directory:
+To build a final report which has analysis of the dataset including figures, run this code in the RStudio terminal which should you set to /home/rstudio/project as a directory:
 ```
 cd project/
 make report.html
