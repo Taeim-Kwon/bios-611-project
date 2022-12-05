@@ -16,8 +16,8 @@ derived_data/linkedin_derived.csv: .created-dirs source_data/LinkedIn_Profile_Da
 	Rscript pre-process.R
 
 # Create the derived dataset for emotion, beauty, and gender
-derived_data/emotion_gender.csv: .created-dirs derived_data/linkedin_derived.csv emotion_gender.R
-	Rscript emotion_gender.R
+derived_data/emotion_gender.csv: .created-dirs derived_data/linkedin_derived.csv emotion_gender_dataset.R
+	Rscript emotion_gender_dataset.R
 
 # Create figures
 figures/smile-density.png:\
@@ -44,7 +44,7 @@ figures/emo_gender_gbm.png\
  figures/emo_gender_roc.png\
  figures/emo_gender_calculation.png:\
   derived_data/emotion_gender.csv\
-  emotion_gender.R\
+  emotion_gender.R
 	Rscript emotion_gender.R
 
 figures/collinearity_beauty.png:\
@@ -59,7 +59,7 @@ figures/emo_beauty_lasso.png:\
 
 figures/emo_lasso.png:\
   derived_data/emotion_gender.csv\
-  emotion_lasso.R\
+  emotion_lasso.R
 	Rscript emotion_lasso.R
 
 # Create the report
