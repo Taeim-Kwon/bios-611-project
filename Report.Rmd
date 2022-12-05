@@ -108,7 +108,7 @@ $$
 
 ![Calculation for emotion gender dataset](./figures/emo_gender_calculation.png){width=75%}
 
-f1 score is approximately between 0.85 and 0.75, and false positive rate goes down. As f1 is close to 1, the precision and recall is pretty good.
+f1 score is approximately between 0.85 and 0.75, and false positive rate goes down. As f1 is close to 1, the precision and recall is moderately okay.
 
 Overall, from this section, I would like to pay attention to the result from the relative influence plot such that one of the emotion variables, emo neutral, was considered more important than the beauty variables which were the predictive values from the dataset. However, we should be careful about collinearity between the beauty variables. We will look at collinearity between them by plotting their scatterplots below.
 
@@ -129,7 +129,7 @@ The dataset was split into a train and test dataset, and as the variable male is
 ![Emotions_beauty_lasso](./figures/emo_beauty_lasso.png)
 
 
-The two dashed vertical lines are present as candidates for the optimal lambda, lambda.min (0.0001463061) and lambda.1se (0.002384425). For consistency, I used lambda.min as the best lambda and looked for the regression coefficients with it. Only the coefficient for emo_sadness was shrunk to 0 with lambda.min. The accuracy of the model with lambda.min was made by testing to what extent the predicted and observed values from the test dataset matched up, and it was 0.8077166.
+The two dashed vertical lines are present as candidates for the optimal lambda, lambda.min (0.0001463061) and lambda.1se (0.002384425). I used lambda.min as the best lambda and looked for the regression coefficients with it. Only the coefficient for emo_sadness was shrunk to 0 with lambda.min. The accuracy of the model with lambda.min was made by testing to what extent the predicted and observed values from the test dataset matched up, and it was 0.8077166.
 ```
 11 x 1 sparse Matrix of class "dgCMatrix"
                          s1
@@ -191,7 +191,7 @@ Same methods were used including partitioning the dataset into a train and test 
 
 ![Emotions_lasso](./figures/emo_lasso.png)
 
-The plot has two dashed vertical lines for the two lambdas, lambda.min (0.00103216) and lambda.1se (0.01532726). I used lambda.min as the best lambda. Interestingly, none of the regression coeffcients was shrunk to 0 with the lambda. The accuracy of the lasso model was 0.7470563.
+The plot has two dashed vertical lines for the two lambdas, lambda.min (0.00103216) and lambda.1se (0.01532726). For consistency, I used lambda.min as the best lambda. Interestingly, none of the regression coeffcients was shrunk to 0 with the lambda. The accuracy of the lasso model was 0.7470563.
 ```
 8 x 1 sparse Matrix of class "dgCMatrix"
                          s1
