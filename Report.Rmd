@@ -26,7 +26,7 @@ Columns:
 
 - Face_quality
 
-## Data Visualization
+## Data Visualization Before Analyzing
 
 ### Density Plot for Smile
 ![Smile Density](./figures/smile-density.png){width=50%}
@@ -129,7 +129,7 @@ The dataset was split into a train and test dataset, and as the variable male is
 ![Emotions_beauty_lasso](./figures/emo_beauty_lasso.png)
 
 
-The two dashed vertical lines are present as candidates for the optimal lambda, lambda.min (0.0001463061) and lambda.1se (0.002384425). I used lambda.min as the best lambda and looked for the regression coefficients with it. Only the coefficient for emo_sadness was shrunk to 0 with lambda.min. The accuracy of the model with lambda.min was made by testing to what extent the predicted and observed values from the test dataset matched up, and it was 0.8077166.
+The two dashed vertical lines are present as candidates for the optimal lambda, lambda.min (0.0001463061) and lambda.1se (0.002384425). For consistency, I used lambda.min as the best lambda and looked for the regression coefficients with it. Only the coefficient for emo_sadness was shrunk to 0 with lambda.min. The accuracy of the model with lambda.min was made by testing to what extent the predicted and observed values from the test dataset matched up, and it was 0.8077166.
 ```
 11 x 1 sparse Matrix of class "dgCMatrix"
                          s1
@@ -238,4 +238,4 @@ Number of Fisher Scoring iterations: 5
 
 Every p-value for the emotion variables was not significant, and the accuracy of the model was 0.7481077, which is lower then the one generated from the logistic regression model including the beauty variables. So, when reducing collinearity as much as possible by removing the beauty variables, we had the rest of the variables statistically insignificant including the emotion variables that were previously found significant. 
 
-Overall, 
+Overall, it looks like the emotion variables are considered statistically significant at detecting males when the beauty variables were taken into account, but when the beauty variables were excluded due to collinearity between them, the emotion variables are no longer considered significant. That is, we may not be able to conclude there is sufficient evidence to suggest that the emotion variables are playing an important role in predicting males. 
